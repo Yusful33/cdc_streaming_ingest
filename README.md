@@ -35,7 +35,7 @@ ssl=0
 
 1. `docker-compose up kafka-cluster -d`
 
-     This Docker Compose file defines a Kafka-cluster service that sets up a Kafka cluster and other related components. As part of this process, we are leveraging the "zachmartinkr/fast-data-dev" which provides us with the ability to utilize the Landoop UI to configure the Kafka connectors (along with a few other services (e.g. Zookeeper/SchemaRegistry/etc.). Once the docker container is up and running, you should be able to view the Landoop UI (at localhost:3030) to better understand Connectors, Topics and even view detailed Log information (see screenshot below for an example).
+     This Docker Compose file defines a Kafka-cluster service that sets up a Kafka cluster and other related components in a predictable way.The image being used "zachmartinkr/fast-data-dev" is based on the Landoop Fast Data Dev image which comes with a lot of connectors already loaded to the image (e.g. so we don't need to worry about creating a Postgres or S3 connector for this excercise). On top of this UI we will also be able to see everything visually, which makes it a lot easier for beginners. Once the docker container is up and running, you should be able to view the Landoop UI (at localhost:3030) to better understand Connectors, Topics and even view detailed Log information (see screenshot below for an example).
 
    <img width="1134" alt="image" src="https://github.com/YCat33/cdc_streaming_ingest/assets/115039992/220f803a-829f-4bac-83cf-774450d88a56">
 
