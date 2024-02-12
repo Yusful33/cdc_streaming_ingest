@@ -7,17 +7,23 @@
 ## Pre-Requisites 
 
   - PostgreSQL Database
-  - Starburst Galaxy Domain
+  - Starburst Galaxy Domain, sign-up [here](https://www.starburst.io/platform/starburst-galaxy/start/)
   - Available AWS S3 Bucket
   - Docker installed and configured
 
-### PostgreSQL AWS RDS Instance Preperation
+### PostgreSQL AWS RDS Instance Preparation
+
+**This series of steps configures a PostgreSQL database on Amazon RDS (Relational Database Service) for logical replication and sets up a new user with replication access. 
 
   - Set the rds.logical_replication to 1
+      - This enables logical replication on the RDS instance
   - Set shared_preload_libraries to pg_stat_statements,pg_hint_plan,pgaudit
 ssl=0
-  - Verify that the wal_level parameter is set to logical by running Show wal_level as the database RDS master user. 
+      - This sets the shared preload libraries that PostgreSQL will load on startup. In this case, it includes pg_stat_statements, pg_hint_plan, and pgaudit. The ssl=0 part indicates that SSL is disabled.
+  - Verify that the wal_level parameter is set to logical by running Show wal_level as the database RDS master user.
+      - This checks whether the wal_level parameter is already set to logical. This parameter determines how much information is written to the WAL (Write-Ahead Log). Logical replication requires the wal_level to be set to logical.
   - Set the Debezium plugin.name parameter to pgoutput.
+      - This configures the Debezium plugin for PostgreSQL logical decoding. The plugin.name parameter specifies which plugin should be used for logical decoding. Setting it to pgoutput indicates that the output plugin for PostgreSQL should be used.
   - Configure new user with replication access
           
           CREATE USER <username> password '<password>';
