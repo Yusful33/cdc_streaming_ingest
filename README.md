@@ -1,8 +1,8 @@
 # Background 
 
-Almost since its inception, Trino (and Starburst) has been trying to balance between being just a federation engine that can connect to a myriad of different data sources (e.g. PostgreSQL, MongoDB, MySQL, etc..) and a Massively Parallel Processing (MPP) query engine used to efficiently query a data lake. While there is a lot of nuance between how you should utilize the engine based on your use case and needs there are scenarios in which you might want to be able to do both. One such scenario involves moving data from operational databases into a data lake and how to best go about this process. One common consideration involves how you would best integrate Change Data Capture (CDC) into this process as data evolves in your underlying database. 
+Almost since its inception, Trino (and Starburst) has been balancing between being a federation engine that can connect to a myriad of different data sources (e.g. PostgreSQL, MongoDB, MySQL, etc..) and a Massively Parallel Processing (MPP) engine used to query a data lake efficiently. While there is a lot of nuance between how you should utilize the engine based on your use case and needs there are scenarios in which you might want to be able to do both. One such scenario involves moving data from operational databases into a data lake and how to best go about this process. One common consideration involves how you would best integrate Change Data Capture (CDC) into this process as data evolves in your underlying database. 
 
-Today, I am going to walk through exactly how you would leverage Debezium and Kafka to integrate a full CDC workflow from a PostgreSQL database into a modern data lake format (Iceberg) that can be queried and managed by Starburst Galaxy. 
+Today, I will walk through exactly how you would leverage Debezium and Kafka to integrate a full CDC workflow from a PostgreSQL database into a modern data lake format (Iceberg) that can be queried and managed by Starburst Galaxy. 
 By utilizing Debezium's capabilities, you can capture and stream changes made to your PostgreSQL database tables in real time, providing valuable insights into data modifications, updates, inserts, and deletions as they occur. Debezium simplifies the CDC process by automatically detecting and capturing database changes through PostgreSQL's logical decoding feature, which streams the database's transaction log events to Kafka topics. This approach ensures low-latency, high-throughput data streaming to a variety of different data outposts. By coupling Debezium, Kafka, and Starburst Galaxy, you can achieve a decoupled architecture, and efficient data synchronization across diverse systems, further unlocking the possibility of what can be accomplished by an alternative data stack. 
 
 
@@ -45,7 +45,7 @@ ssl=0
 
 ## Tutorial
 
-**Troubleshooting: Once the container is up, you should be able to review the logs to understand what is occurring within each connector at (localhost:3030/logs/connect-distributed.log)
+**Troubleshooting**: Once the container is up, you should be able to review the logs to understand what is occurring within each connector at (localhost:3030/logs/connect-distributed.log)
 
 1. `docker-compose up kafka-cluster -d`
 
