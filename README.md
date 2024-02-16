@@ -1,3 +1,11 @@
+# Background 
+
+Almost since its inception, Trino (and Starburst) have been balancing between being a federation engine that can connect to a myriad of different data sources (e.g. PostgreSQL, MongoDB, MySQL, etc..) and a Massively Parallel Processing (MPP) engine used to query a data lake efficiently. While there is a lot of nuance between how you should utilize the engine based on your use case and needs there are scenarios in which you might want to be able to do both. One such scenario involves moving data from operational databases into a data lake and how to best go about this process. One common consideration involves how you would best integrate Change Data Capture (CDC) into this process as data evolves in your underlying database. 
+
+Today, I will walk through exactly how you would leverage Debezium and Kafka to integrate a full CDC workflow from a PostgreSQL database into a modern data lake format (Iceberg) that can be queried and managed by Starburst Galaxy. 
+By utilizing Debezium's capabilities, you can capture and stream changes made to your PostgreSQL database tables in real time, providing valuable insights into data modifications, updates, inserts, and deletions as they occur. Debezium simplifies the CDC process by automatically detecting and capturing database changes through PostgreSQL's logical decoding feature, which streams the database's transaction log events to Kafka topics. This approach ensures low-latency, high-throughput data streaming to a variety of different data outposts. By coupling Debezium, Kafka, and Starburst Galaxy, you can achieve a decoupled architecture, and efficient data synchronization across diverse systems, further unlocking the possibility of what can be accomplished by an alternative data stack. 
+
+
 # Overall Architecture 
 
 <img width="1098" alt="image" src="https://github.com/YCat33/cdc_streaming_ingest/assets/115039992/89d23ea3-dec8-400d-b8be-479339cd8157">
@@ -7,17 +15,28 @@
 ## Pre-Requisites 
 
   - PostgreSQL Database
+<<<<<<< HEAD
   - Starburst Galaxy Domain
   - Available AWS S3 Bucket (used to output data)
+=======
+  - Starburst Galaxy Domain, sign-up [here](https://www.starburst.io/platform/starburst-galaxy/start/)
+  - Available AWS S3 Bucket
+>>>>>>> 9f6f48d8c96e394c0baccc58b56e3b7eaf60378b
   - Docker installed and configured
 
-### PostgreSQL AWS RDS Instance Preperation
+### PostgreSQL AWS RDS Instance Preparation
+
+**This series of steps configures a PostgreSQL database on Amazon RDS (Relational Database Service) for logical replication and sets up a new user with replication access. 
 
   - Set the rds.logical_replication to 1
+      - This enables logical replication on the RDS instance
   - Set shared_preload_libraries to pg_stat_statements,pg_hint_plan,pgaudit
 ssl=0
-  - Verify that the wal_level parameter is set to logical by running Show wal_level as the database RDS master user. 
+      - This sets the shared preload libraries that PostgreSQL will load on startup. In this case, it includes pg_stat_statements, pg_hint_plan, and pgaudit. The ssl=0 part indicates that SSL is disabled.
+  - Verify that the wal_level parameter is set to logical by running Show wal_level as the database RDS master user.
+      - This checks whether the wal_level parameter is already set to logical. This parameter determines how much information is written to the WAL (Write-Ahead Log). Logical replication requires the wal_level to be set to logical.
   - Set the Debezium plugin.name parameter to pgoutput.
+      - This configures the Debezium plugin for PostgreSQL logical decoding. The plugin.name parameter specifies which plugin should be used for logical decoding. Setting it to pgoutput indicates that the output plugin for PostgreSQL should be used.
   - Configure new user with replication access
           
           CREATE USER <username> password '<password>';
@@ -31,7 +50,7 @@ ssl=0
 
 ## Tutorial
 
-**Troubleshooting: Once the container is up, you should be able to review the logs to understand what is occurring within each connector at (localhost:3030/logs/connect-distributed.log)
+**Troubleshooting**: Once the container is up, you should be able to review the logs to understand what is occurring within each connector at (localhost:3030/logs/connect-distributed.log)
 
 1. `docker-compose up kafka-cluster -d`
 
