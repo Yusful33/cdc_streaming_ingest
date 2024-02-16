@@ -8,7 +8,7 @@
 
   - PostgreSQL Database
   - Starburst Galaxy Domain
-  - Available AWS S3 Bucket
+  - Available AWS S3 Bucket (used to output data)
   - Docker installed and configured
 
 ### PostgreSQL AWS RDS Instance Preperation
